@@ -79,20 +79,39 @@ export default function Home() {
           <h2 className={styles.title}>Projetos</h2>
           <article className={styles.container}>
             <div className={styles.projectList}>
+            <a href="https://ttravelling.netlify.app/">
+            
             <div className={styles.projectItem}>
-              <h2><a href="https://ttravelling.netlify.app/">TTRAVEL</a></h2>
+              <div className={styles.projectImage}>
+                <img src="/ttravel.png" alt="" />
+              </div>
+              <h2>TTRAVEL</h2>
               <p>Site que calcula o custo de combustível em viagens, integrando APIs do IBGE e
 OpenRouteService. O framework utilizado foi o Next.js.</p>
             </div>
+            </a>
+            <a href="https://front-academia-augusto.vercel.app/">
             <div className={styles.projectItem}>
-              <h2><a href="https://front-academia-augusto.vercel.app/">Ah, cadê mia?</a></h2>
+              <div className={styles.projectImage}>
+                <img src="/academia.png" alt="" />
+              </div>
+              <h2>Ah, cadê mia?</h2>
               <p>Sistema de gerenciamento de academia desenvolvido com React.js, Node.js e Postgres.</p>
             </div>
+            </a>
+            <a href="https://blog-3bk5.onrender.com/">
             <div className={styles.projectItem}>
-              <h2><a href="https://blog-3bk5.onrender.com/">Blog</a></h2>
+              <div className={styles.projectImage}>
+                <img src="/blog.png" alt="" />
+              </div>
+              <h2>Blog</h2>
               <p>Projeto completo de blog com painel administrativo, autenticação e CRUD.</p>
             </div>
+            </a>
             <div className={styles.projectItem}>
+              <div className={styles.projectImage}>
+                <img src="/portfolio.png" alt="" />
+              </div>
               <h2><a href="#">Portfólio</a></h2>
               <p>Este portfólio foi desenvolvido utilizando Next.js e TypeScript, com foco em performance e SEO. Futuramente pretendo adicionar mensageria para contato.</p>
             </div>
