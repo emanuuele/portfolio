@@ -1,7 +1,10 @@
 body {
   margin: 0;
-  padding: 50px;
   background-color: #D9D9D9;
+}
+
+main {
+  padding: 50px/;
 }
 
 @media (max-width: 768px) {
