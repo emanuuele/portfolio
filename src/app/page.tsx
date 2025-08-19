@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,13 +12,13 @@ export default function Home() {
         <header className={styles.header}>
           <section className={styles.intro}>
             <ul className={styles.menu}>
-              <li className={styles.menuItem} onClick={() => setIsMenuOpen(!isMenuOpen)}><MenuOutlined /></li>
+              <li className={styles.menuItem} onClick={() => setIsMenuOpen(!isMenuOpen)}>{isMenuOpen ? <CloseCircleOutlined /> : <MenuOutlined />}</li>
               {isMenuOpen && (
                 <>
-                  <li className={styles.menuItem}><a className={styles.link} href="#sobre">Sobre</a></li>
-                  <li className={styles.menuItem}><a className={styles.link} href="#techs">Techs</a></li>
-                  <li className={styles.menuItem}><a className={styles.link} href="#projetos">Projetos</a></li>
-                  <li className={styles.menuItem}><a className={styles.link} href="#contato">Contato</a></li>
+                  <li className={styles.menuItem} onClick={() => setIsMenuOpen(false)}><a className={styles.link} href="#sobre">Sobre</a></li>
+                  <li className={styles.menuItem} onClick={() => setIsMenuOpen(false)}><a className={styles.link} href="#techs">Techs</a></li>
+                  <li className={styles.menuItem} onClick={() => setIsMenuOpen(false)}><a className={styles.link} href="#projetos">Projetos</a></li>
+                  <li className={styles.menuItem} onClick={() => setIsMenuOpen(false)}><a className={styles.link} href="#contato">Contato</a></li>
                 </>
               )}
             </ul>
@@ -26,8 +27,12 @@ export default function Home() {
 
         <section className={styles.hero} id="sobre">
           <h1 className={styles.title}>Sobre Emanuele Maria</h1>
-          <div className={styles.textContainer}>
-            <p>Lembro-me da primeira entrevista com meu primeiro chefe, ele me perguntou onde eu queria chegar e eu disse: “quero ser programadora Full-stack”. Posso dizer que atingi esse meu primeiro objetivo 😉. Comecei a programar em 2019, quando entrei no IFPE de Garanhuns em Técnico de Informática. Hoje em dia, sou desenvolvedora e faço Engenharia de Software na UPE de Surubim.</p>
+          <div className={styles.container} >
+            <div className={styles.textContainer}>
+              <p>Lembro-me da primeira entrevista com meu primeiro chefe, ele me perguntou onde eu queria chegar e eu disse: “quero ser programadora Full-stack”. Posso dizer que atingi esse meu primeiro objetivo 😉. Comecei a programar em 2019, quando entrei no IFPE de Garanhuns em Técnico de Informática. Hoje em dia, sou desenvolvedora e faço Engenharia de Software na UPE de Surubim.</p>
+            </div>
+            <div className={styles.imageContainer}>
+            </div>
           </div>
         </section>
 
