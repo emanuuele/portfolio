@@ -1,0 +1,16 @@
+{
+    "SPRING_BOOT": "Framework Java para criar APIs e aplicações web rapidamente.",
+    "REACT": "Biblioteca JavaScript para construir interfaces de usuário interativas.",
+    "NODE_JS": "Ambiente de execução JavaScript do lado do servidor.",
+    "DOCKER": "Plataforma para desenvolvimento, envio e execução de aplicativos em contêineres.",
+    "TYPESCRIPT": "Superset do JavaScript que adiciona tipagem estática.",
+    "JAVA": "Linguagem de programação amplamente utilizada para desenvolvimento de aplicativos.",
+    "JAVASCRIPT": "Linguagem de programação para desenvolvimento web e aplicações interativas.",
+    "REACT_NATIVE": "Framework para construção de aplicativos móveis usando React.",
+    "MYSQL": "Sistema de gerenciamento de banco de dados relacional.",
+    "POSTGRESQL": "Sistema de gerenciamento de banco de dados objeto-relacional.",
+    "LARAVEL": "Framework PHP para desenvolvimento de aplicações web.",
+    "PHP": "Linguagem de programação para desenvolvimento web.",
+    "CODEIGNITER": "Framework PHP para desenvolvimento de aplicações web.",
+    "NEXT_JS": "Framework React para desenvolvimento de aplicações web com renderização do lado do servidor."
+}

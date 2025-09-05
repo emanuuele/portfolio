@@ -1,11 +1,32 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./page.module.css";
 import MenuOutlined from "@ant-design/icons/lib/icons/MenuOutlined";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import * as TECHS_TYPES from "@/type/techs";
+import techsData from '../techs/techs.json';
+import { Carousel } from "antd";
+
+export const techsArray: TECHS_TYPES.Techs[] = [
+  "SPRING_BOOT",
+  "REACT",
+  "NODE_JS",
+  "DOCKER",
+  "TYPESCRIPT",
+  "JAVA",
+  "JAVASCRIPT",
+  "REACT_NATIVE",
+  "MYSQL",
+  "POSTGRESQL",
+  "LARAVEL",
+  "PHP",
+  "CODEIGNITER",
+  "NEXT_JS"
+];
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [techSelected, setTechSelected] = useState<TECHS_TYPES.Techs | null>(null);
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -24,7 +45,6 @@ export default function Home() {
             </ul>
           </section>
         </header>
-
         <section className={styles.hero} id="sobre">
           <h1 className={styles.title}>Sobre Emanuele Maria</h1>
           <div className={styles.container} >
@@ -35,53 +55,21 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         <section className={styles.techs} id="techs">
           <h2 className={styles.title}>Techs trabalhadas</h2>
           <article className={styles.container}>
             <div className={styles.techList}>
-              <div className={styles.techItem}>
-                <img src="/spring.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/react.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/node.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/docker.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/typescript.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/java.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/javascript.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/react-native.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/mysql.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/postgresql.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/laravel.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/php.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/codeigniter.png" alt="" width={100} />
-              </div>
-              <div className={styles.techItem}>
-                <img src="/next.svg" alt="" width={100} />
-              </div>
+              {techsArray.map((tech) => (
+                <div key={tech} onClick={() => setTechSelected(tech)} className={styles.techItem}>
+                  <div className={styles.techInfo}>
+                    {techSelected === tech ? (
+                      <p>{techsData[tech]}</p>
+                    ) : (
+                      <img src={tech == "NEXT_JS" ? "/next_js.svg" : `/${tech.toLowerCase()}.png`} alt={tech} width={100} />
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </article>
         </section>
@@ -99,7 +87,7 @@ export default function Home() {
                   <p>Site que calcula o custo de combustível em viagens, integrando APIs do IBGE e
                     OpenRouteService. O framework utilizado foi o Next.js.</p>
                 </div>
-                <div>ver projeto <a href="https://ttravelling.netlify.app/">aqui</a></div>
+                <div className={styles.projectLink}>ver projeto <a href="https://ttravelling.netlify.app/">aqui</a></div>
               </div>
               <div className={styles.projectItem}>
                 <div className={styles.projectImage}>
@@ -109,8 +97,8 @@ export default function Home() {
                   <h2>Ah, cadê mia?</h2>
                   <p>Sistema de gerenciamento de academia desenvolvido com React.js, Node.js e Postgres.</p>
                 </div>
-                <div>ver projeto <a href="https://front-academia-augusto.vercel.app/">aqui</a></div>
-              </div>
+                <div className={styles.projectLink}>ver projeto <a href="https://front-academia-augusto.vercel.app/">aqui</a></div>
+              </div> 
                 <div className={styles.projectItem}>
                   <div className={styles.projectImage}>
                     <img src="/blog.png" alt="" />
@@ -119,7 +107,7 @@ export default function Home() {
                     <h2>Blog</h2>
                     <p>Projeto completo de blog com painel administrativo, autenticação e CRUD.</p>
                   </div>
-                  <div>ver projeto <a href="https://blog-3bk5.onrender.com/">aqui</a></div>
+                  <div className={styles.projectLink}>ver projeto <a href="https://blog-3bk5.onrender.com/">aqui</a></div>
                 </div>
               <div className={styles.projectItem}>
                 <div className={styles.projectImage}>
