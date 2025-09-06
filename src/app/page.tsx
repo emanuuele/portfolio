@@ -87,7 +87,7 @@ export default function Home() {
                   <p>Site que calcula o custo de combustível em viagens, integrando APIs do IBGE e
                     OpenRouteService. O framework utilizado foi o Next.js.</p>
                 </div>
-                <div className={styles.projectLink}>ver projeto <a href="https://ttravelling.netlify.app/">aqui</a></div>
+                <div className={styles.projectLink}><a href="https://ttravelling.netlify.app/">ver projeto aqui</a></div>
               </div>
               <div className={styles.projectItem}>
                 <div className={styles.projectImage}>
@@ -97,7 +97,7 @@ export default function Home() {
                   <h2>Ah, cadê mia?</h2>
                   <p>Sistema de gerenciamento de academia desenvolvido com React.js, Node.js e Postgres.</p>
                 </div>
-                <div className={styles.projectLink}>ver projeto <a href="https://front-academia-augusto.vercel.app/">aqui</a></div>
+                <div className={styles.projectLink}><a href="https://front-academia-augusto.vercel.app/">ver projeto aqui</a></div>
               </div> 
                 <div className={styles.projectItem}>
                   <div className={styles.projectImage}>
@@ -107,7 +107,7 @@ export default function Home() {
                     <h2>Blog</h2>
                     <p>Projeto completo de blog com painel administrativo, autenticação e CRUD.</p>
                   </div>
-                  <div className={styles.projectLink}>ver projeto <a href="https://blog-3bk5.onrender.com/">aqui</a></div>
+                  <div className={styles.projectLink}><a href="https://blog-3bk5.onrender.com/">ver projeto aqui</a></div>
                 </div>
               <div className={styles.projectItem}>
                 <div className={styles.projectImage}>
@@ -117,7 +117,7 @@ export default function Home() {
                   <h2><a href="#">Portfólio</a></h2>
                   <p>Este portfólio foi desenvolvido utilizando Next.js e TypeScript, com foco em performance e SEO. Futuramente pretendo adicionar mensageria para contato.</p>
                 </div>
-                <div><a href="#">você já está aqui 😅 </a></div>
+                <div className={styles.projectLink}><a href="#">você já está aqui 😅 </a></div>
               </div>
             </div>
           </article>
