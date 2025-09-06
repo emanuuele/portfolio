@@ -7,7 +7,7 @@ import * as TECHS_TYPES from "@/type/techs";
 import techsData from '../techs/techs.json';
 import { Carousel } from "antd";
 
-export const techsArray: TECHS_TYPES.Techs[] = [
+const techsArray: TECHS_TYPES.Techs[] = [
   "SPRING_BOOT",
   "REACT",
   "NODE_JS",
