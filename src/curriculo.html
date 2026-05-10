@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emanuele Maria da Silva — Currículo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --yellow: #D417A1;
+    --dark: #1A1A1A;
+    --mid: #444444;
+    --light: #888888;
+    --rule: #CCCCCC;
+    --bg-left: #F0F0F0;
+    --white: #ffffff;
+    --page-w: 210mm;
+    --page-h: 297mm;
+    --left-w: 62mm;
+  }
+
+  body {
+    background: #d0d0d0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 30px 0 60px;
+    font-family: 'Barlow', sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: var(--page-w);
+    min-height: var(--page-h);
+    background: var(--white);
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  }
+
+  /* ===================== LEFT COLUMN ===================== */
+  .left {
+    width: var(--left-w);
+    min-height: var(--page-h);
+    padding: 28mm 5mm 20mm 6mm;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .left-section { margin-bottom: 7mm; position: relative; }
+
+  .left-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9.5pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--dark);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 3px;
+    margin-bottom: 6px;
+  }
+
+  .skill-category { margin-bottom: 5px; }
+
+  .skill-cat-label {
+    font-size: 7pt;
+    font-weight: 600;
+    color: var(--light);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8pt;
+    color: var(--mid);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .skill-dot {
+    width: 5px; height: 5px;
+    background: var(--yellow);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .edu-entry { margin-bottom: 8px; }
+  .edu-degree {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.3;
+  }
+  .edu-school {
+    font-size: 7.5pt;
+    color: var(--mid);
+    margin-top: 1px;
+  }
+  .edu-period {
+    font-size: 7pt;
+    color: var(--light);
+    font-style: italic;
+    margin-top: 1px;
+  }
+
+  .lang-entry { margin-bottom: 7px; }
+  .lang-name { font-size: 8.5pt; font-weight: 600; color: var(--dark); }
+  .lang-level { font-size: 7.5pt; color: var(--light); margin-top: 1px; }
+
+  /* ===================== RIGHT COLUMN ===================== */
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 10mm 8mm 5mm 8mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 0;
+  }
+
+  .header-name-block { display: flex; flex-direction: column; gap: 0; }
+
+  .header-slashes {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 3px;
+  }
+  .slash {
+    display: inline-block;
+    width: 7px;
+    height: 22px;
+    background: var(--yellow);
+    transform: skewX(-18deg);
+  }
+  .slash:first-child { opacity: 0.7; }
+
+  .header-firstname {
+    font-family: 'Barlow', sans-serif;
+    font-size: 17pt;
+    font-weight: 300;
+    color: var(--dark);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    display: flex;
+    gap: 5px;
+  }
+  .header-lastname {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 30pt;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-top: 1px;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+  }
+  .title-bar { width: 2px; height: 14px; background: var(--rule); }
+  .title-text {
+    font-size: 8.5pt;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--mid);
+    text-transform: uppercase;
+  }
+
+  .header-contact {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 2mm;
+    padding-left: 1rem;
+    border-left: 1px solid var(--rule);
+  }
+  .contact-row {
+    font-size: 7.5pt;
+    color: var(--mid);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+  .contact-label {
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 7.5pt;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 5mm 8mm 5mm 8mm;
+    flex: 1;
+  }
+
+  .summary {
+    font-size: 8pt;
+    color: var(--mid);
+    line-height: 1.55;
+    margin-bottom: 6mm;
+  }
+
+  .section { margin-bottom: 6mm; }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9.5pt;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--dark);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 3px;
+    margin-bottom: 5mm;
+  }
+
+  .job { margin-bottom: 5mm; }
+  .job-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 2px;
+  }
+  .job-meta {
+    font-size: 8pt;
+    color: var(--light);
+    font-style: italic;
+    margin-bottom: 5px;
+  }
+  .job-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .job-bullets li {
+    font-size: 7.5pt;
+    color: var(--mid);
+    display: flex;
+    gap: 7px;
+    align-items: flex-start;
+    line-height: 1.45;
+  }
+  .job-bullets li::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    background: var(--yellow);
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .project { margin-bottom: 4mm; }
+  .project-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 2px;
+  }
+  .project-desc {
+    font-size: 7.5pt;
+    color: var(--mid);
+    line-height: 1.45;
+    margin-bottom: 2px;
+  }
+  .project-stack {
+    font-size: 7pt;
+    color: var(--light);
+    font-style: italic;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--dark);
+    padding: 4mm 8mm;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4mm;
+  }
+
+  .footer-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+  }
+  .footer-skill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .footer-skill-name {
+    font-size: 7pt;
+    color: #AAAAAA;
+  }
+  .dots { display: flex; gap: 3px; }
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--yellow);
+  }
+  .dot.empty { background: rgba(255,255,255,0.2); }
+
+  @media print {
+    body { background: none; padding: 0; }
+    .page { box-shadow: none; }
+  }
+  .image-profile {
+    width: 80%;
+    position: absolute;
+    top: -106px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== LEFT COLUMN ===== -->
+  <aside class="left">
+
+    <div class="left-section">
+      <img src="../public/manuela.png" class="image-profile">
+      <div class="left-section-title" style="margin-top: 14rem;">Competências</div>
+
+      <div class="skill-category">
+        <div class="skill-cat-label">// LINGUAGENS</div>
+        <div class="skill-item"><span class="skill-dot"></span>TypeScript / JavaScript</div>
+        <div class="skill-item"><span class="skill-dot"></span>Java</div>
+        <div class="skill-item"><span class="skill-dot"></span>PHP</div>
+        <div class="skill-item"><span class="skill-dot"></span>NodeJs</div>
+      </div>
+
+      <div class="skill-category">
+        <div class="skill-cat-label">// FRAMEWORKS</div>
+        <div class="skill-item"><span class="skill-dot"></span>ReactJs</div>
+        <div class="skill-item"><span class="skill-dot"></span>React Native</div>
+        <div class="skill-item"><span class="skill-dot"></span>Laravel</div>
+        <div class="skill-item"><span class="skill-dot"></span>AdonisJS</div>
+      </div>
+
+      <div class="skill-category">
+        <div class="skill-cat-label">// ARQUITETURA</div>
+        <div class="skill-item"><span class="skill-dot"></span>SOLID</div>
+        <div class="skill-item"><span class="skill-dot"></span>Clean Architecture</div>
+        <div class="skill-item"><span class="skill-dot"></span>MVC / MVVM</div>
+        <div class="skill-item"><span class="skill-dot"></span>Design Patterns</div>
+        <div class="skill-item"><span class="skill-dot"></span>APIs REST</div>
+      </div>
+
+      <div class="skill-category">
+        <div class="skill-cat-label">// FERRAMENTAS</div>
+        <div class="skill-item"><span class="skill-dot"></span>Docker</div>
+        <div class="skill-item"><span class="skill-dot"></span>Git / GitHub</div>
+        <div class="skill-item"><span class="skill-dot"></span>MySQL / PostgreSQL</div>
+        <div class="skill-item"><span class="skill-dot"></span>Firebase</div>
+        <div class="skill-item"><span class="skill-dot"></span>Scrum</div>
+      </div>
+    </div>
+
+    <div class="left-section">
+      <div class="left-section-title">Formação</div>
+
+      <div class="edu-entry">
+        <div class="edu-degree">Engenharia de Software</div>
+        <div class="edu-school">UPE — Campus Surubim</div>
+        <div class="edu-period">2023 – Atualmente · 5º período</div>
+      </div>
+
+      <div class="edu-entry">
+        <div class="edu-degree">Técnico em Informática</div>
+        <div class="edu-school">IFPE Garanhuns</div>
+        <div class="edu-period">2019 – 2022</div>
+      </div>
+    </div>
+
+    <div class="left-section">
+      <div class="left-section-title">Idiomas</div>
+      <div class="lang-entry">
+        <div class="lang-name">Português</div>
+        <div class="lang-level">Fluente</div>
+      </div>
+      <div class="lang-entry">
+        <div class="lang-name">Inglês</div>
+        <div class="lang-level">Intermediário (A2/B1)</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ===== RIGHT COLUMN ===== -->
+  <div class="right">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-name-block">
+        <div class="header-firstname">
+          <div class="header-slashes">
+            <span class="slash"></span>
+          </div>
+          Emanuele
+        </div>
+        <div class="header-lastname">Maria</div>
+        <div class="header-title">
+          <div class="title-bar"></div>
+          <div class="title-text">Desenvolvedora Full Stack</div>
+        </div>
+      </div>
+      <div class="header-contact">
+        <div class="contact-row"><span class="contact-label">Telefone:</span>(81) 99637-6933</div>
+        <div class="contact-row"><span class="contact-label">E-mail:</span>emanuele.mdsilva@gmail.com</div>
+        <div class="contact-row"><span class="contact-label">LinkedIn:</span>linkedin.com/in/emanuelemds</div>
+        <div class="contact-row"><span class="contact-label">GitHub:</span>github.com/emanuuele</div>
+        <div class="contact-row"><span class="contact-label">Endereço:</span>Limoeiro – PE</div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+      <p class="summary">
+        Desenvolvedora Full Stack com experiência em aplicações web e mobile utilizando ReactJs, React Native, NodeJs, Java, PHP, Laravel, TypeScript e MySQL. Atua no desenvolvimento de sistemas ERP, PDV e aplicações Android/iOS com foco em arquitetura de software, escalabilidade e manutenção. Possui vivência com SOLID, Clean Architecture, POO, MVC e MVVM, integração de APIs REST, versionamento com Git/GitHub, Docker e metodologias ágeis.
+      </p>
+
+      <!-- WORK EXPERIENCE -->
+      <div class="section">
+        <div class="section-title">Experiência Profissional</div>
+
+        <div class="job">
+          <div class="job-title">Programadora Júnior</div>
+          <div class="job-meta">Ongold Tech &nbsp;|&nbsp; Abril 2024 – Atualmente</div>
+          <ul class="job-bullets">
+            <li>Desenvolvimento de sistemas web e mobile para ERP e PDV com SOLID, Clean Architecture e arquitetura em camadas.</li>
+            <li>Implementação de Design Patterns, integração de APIs REST e refatoração de sistemas legados.</li>
+            <li>Deploys mobile para Android/iOS utilizando ReactJs, React Native, Java, PHP, TypeScript, Docker e MySQL em ambientes ágeis.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-title">Homologação Stone</div>
+          <div class="job-meta">Ongold Tech &nbsp;|&nbsp; 2024</div>
+          <ul class="job-bullets">
+            <li>Desenvolvimento e homologação de integrações com o SDK Android da Stone em terminais POS.</li>
+            <li>Configuração de operações de pagamento, cancelamento, impressão e contingência.</li>
+            <li>Análise de logs, tratamento de erros transacionais e validação conforme regras da adquirente.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-title">Estagiária de Desenvolvimento</div>
+          <div class="job-meta">Ongold Tech &nbsp;|&nbsp; Janeiro 2023 – Março 2024</div>
+          <ul class="job-bullets">
+            <li>Desenvolvimento full stack de módulos ERP e PDV: funcionalidades financeiras, relatórios gerenciais e integrações.</li>
+            <li>Atuação com ReactJs, React Native, NodeJs, PHP e MySQL no fortalecimento de arquitetura de software.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="section">
+        <div class="section-title">Projetos Pessoais</div>
+
+        <div class="project">
+          <div class="project-title">GirlsChat — Aplicativo Mobile</div>
+          <div class="project-desc">App de chat em tempo real para Android/iOS com autenticação, notificações push (Firebase), upload de arquivos, Socket.IO e testes E2E. Arquitetura modular com Context API.</div>
+          <div class="project-stack">Stack: React Native · Expo · TypeScript · Context API · Socket.IO · Firebase · Axios · Expo Router</div>
+        </div>
+
+        <div class="project">
+          <div class="project-title">GirlsChat API — Backend</div>
+          <div class="project-desc">API RESTful com arquitetura MVC, SOLID e Clean Architecture para gerenciamento de usuários, chats e mensagens em tempo real. Autenticação JWT, WebSocket e testes automatizados.</div>
+          <div class="project-stack">Stack: NodeJs · AdonisJS · PostgreSQL · Lucid ORM · JWT · Socket.IO · Firebase Storage</div>
+        </div>
+
+        <div class="project">
+          <div class="project-title">Front Academia &nbsp;·&nbsp; TTRAVEL &nbsp;·&nbsp; Blog Laravel</div>
+          <div class="project-desc">Sistema de gerenciamento de academia (ReactJs/NodeJs), app de cálculo de combustível com APIs externas e blog com autenticação e painel administrativo.</div>
+          <div class="project-stack">Stack: ReactJs · NodeJs · Laravel · MySQL</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER BAR -->
+    <footer class="footer">
+      <div class="footer-col">
+        <div class="footer-col-title">Core Skills</div>
+        <div class="footer-skill"><span class="footer-skill-name">ReactJs</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">React Native</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">TypeScript</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div></div></div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Backend</div>
+        <div class="footer-skill"><span class="footer-skill-name">NodeJs</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">Java</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div><div class="dot empty"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">PHP / Laravel</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div></div></div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Database & Tools</div>
+        <div class="footer-skill"><span class="footer-skill-name">MySQL</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">PostgreSQL</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div><div class="dot empty"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">Docker</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div><div class="dot empty"></div></div></div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Boas Práticas</div>
+        <div class="footer-skill"><span class="footer-skill-name">SOLID</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">Clean Architecture</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot empty"></div></div></div>
+        <div class="footer-skill"><span class="footer-skill-name">Git / GitHub</span><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+</body>
+</html>
