@@ -347,6 +347,7 @@ function Header({ dark, toggleDark }: { dark: boolean; toggleDark: () => void })
     { label: "Trajetória", href: "#roadmap" },
     { label: "Projetos", href: "#projetos" },
     { label: "Contato", href: "#contato" },
+    { label: "Contrate-me", href: "/contrate-me" },
   ];
 
   return (
@@ -950,7 +951,7 @@ export default function Home() {
   const { dark, toggle } = useDarkMode();
 
   return (
-    <div>
+    <>
       <Header dark={dark} toggleDark={toggle} />
       <main>
         <HeroSection />
@@ -963,6 +964,6 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppFloat />
-    </div>
+    </>
   );
 }
