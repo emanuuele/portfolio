@@ -19,7 +19,6 @@ function Bx({
   className?: string;
   style?: React.CSSProperties;
 }) {
-  // Font Awesome icons
   if (name.startsWith('fa-')) {
     return (
       <i
@@ -29,8 +28,6 @@ function Bx({
       />
     );
   }
-  
-  // Boxicons (default)
   return (
     <i
       className={`bx ${name}${className ? " " + className : ""}`}
@@ -425,7 +422,11 @@ function HeroSection() {
     <section className={styles.hero} id="inicio">
       <div className={styles.heroBg} />
       <div className={styles.heroInner}>
-        <div className={styles.heroContent}>
+        <div
+          className={styles.heroContent}
+          data-aos="fade-right"
+          data-aos-duration="900"
+        >
           <span className={styles.heroGreeting}>
             <Bx name="bx-wave" /> Olá, mundo!
           </span>
@@ -450,7 +451,12 @@ function HeroSection() {
           </div>
         </div>
 
-        <div className={styles.heroImage}>
+        <div
+          className={styles.heroImage}
+          data-aos="fade-left"
+          data-aos-duration="900"
+          data-aos-delay="150"
+        >
           <div className={styles.heroImageRing}>
             <div className={styles.heroPhotoPh}></div>
             <div className={`${styles.heroBadge} ${styles.heroBadge1}`}>
@@ -477,7 +483,11 @@ function SobreSection() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
         <SectionLabel>Quem sou eu</SectionLabel>
         <div className={styles.sobreGrid}>
-          <div className={styles.sobreText}>
+          <div
+            className={styles.sobreText}
+            data-aos="fade-right"
+            data-aos-duration="800"
+          >
             <SectionTitle>Código, <em>paixão</em> & propósito</SectionTitle>
             <p>
               Lembro da primeira entrevista com meu primeiro chefe: ele me perguntou onde eu queria
@@ -499,8 +509,14 @@ function SobreSection() {
                 { n: "14", l: "Tecnologias" },
                 { n: "4+", l: "Projetos" },
                 { n: "1", l: "Artigo escrito" },
-              ].map((s) => (
-                <div key={s.l} className={styles.statCard}>
+              ].map((s, i) => (
+                <div
+                  key={s.l}
+                  className={styles.statCard}
+                  data-aos="zoom-in"
+                  data-aos-delay={i * 100}
+                  data-aos-duration="600"
+                >
                   <span className={styles.statNumber}>{s.n}</span>
                   <span className={styles.statLabel}>{s.l}</span>
                 </div>
@@ -508,7 +524,12 @@ function SobreSection() {
             </div>
           </div>
 
-          <div className={styles.sobreVisual}>
+          <div
+            className={styles.sobreVisual}
+            data-aos="fade-left"
+            data-aos-duration="800"
+            data-aos-delay="150"
+          >
             <div className={styles.sobreCard}>
               <SectionLabel>Formação</SectionLabel>
               <div className={styles.sobreFormacao}>
@@ -516,8 +537,14 @@ function SobreSection() {
                   { icon: "bxs-school", title: "Técnico em Informática", desc: "IFPE — Garanhuns\n2019 – 2022" },
                   { icon: "bxs-graduation", title: "Engenharia de Software", desc: "UPE — Surubim\n2023 – Em andamento" },
                   { icon: "bx-file", title: "Produção Acadêmica", desc: '"A utopia do mercado" — 2024' },
-                ].map((f) => (
-                  <div key={f.title} className={styles.formacaoItem}>
+                ].map((f, i) => (
+                  <div
+                    key={f.title}
+                    className={styles.formacaoItem}
+                    data-aos="fade-up"
+                    data-aos-delay={i * 120}
+                    data-aos-duration="600"
+                  >
                     <div className={styles.formacaoIcon}>
                       <Bx name={f.icon} style={{ fontSize: "1.3rem" }} />
                     </div>
@@ -545,14 +572,16 @@ function TechsSection() {
   return (
     <section id="techs" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
-        <SectionLabel>Stack tecnológica</SectionLabel>
-        <SectionTitle>Ferramentas que <em>domino</em></SectionTitle>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginBottom: 8 }}>
-          Clique em qualquer tecnologia para saber como a utilizo.
-        </p>
+        <div data-aos="fade-up" data-aos-duration="700">
+          <SectionLabel>Stack tecnológica</SectionLabel>
+          <SectionTitle>Ferramentas que <em>domino</em></SectionTitle>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginBottom: 8 }}>
+            Clique em qualquer tecnologia para saber como a utilizo.
+          </p>
+        </div>
 
         <div className={styles.techGrid}>
-          {TECHS.map((tech) => (
+          {TECHS.map((tech, i) => (
             <div
               key={tech}
               className={`${styles.techCard} ${selected === tech ? styles.techCardActive : ""}`}
@@ -561,6 +590,9 @@ function TechsSection() {
               tabIndex={0}
               onKeyDown={(e) => e.key === "Enter" && setSelected(selected === tech ? null : tech)}
               aria-pressed={selected === tech}
+              data-aos="zoom-in"
+              data-aos-delay={i * 50}
+              data-aos-duration="500"
             >
               <Bx
                 name={TECH_ICONS[tech]}
@@ -597,12 +629,20 @@ function ProjectsSection() {
   return (
     <section id="projetos" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
-        <SectionLabel>Portfólio</SectionLabel>
-        <SectionTitle>Projetos que <em>construí</em></SectionTitle>
+        <div data-aos="fade-up" data-aos-duration="700">
+          <SectionLabel>Portfólio</SectionLabel>
+          <SectionTitle>Projetos que <em>construí</em></SectionTitle>
+        </div>
 
         <div className={styles.projectGrid}>
-          {PROJECTS.map((project) => (
-            <div key={project.id} className={styles.projectCard}>
+          {PROJECTS.map((project, i) => (
+            <div
+              key={project.id}
+              className={styles.projectCard}
+              data-aos="fade-up"
+              data-aos-delay={i * 100}
+              data-aos-duration="700"
+            >
               <div className={styles.projectImageWrap} style={{ backgroundImage: `url(${project.image})` }}>
                 <div className={styles.projectImgPh}>
                   {project.icon && (
@@ -653,20 +693,25 @@ function CertsSection() {
   return (
     <section id="certificados" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-secondary)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
-        <SectionLabel>Conquistas</SectionLabel>
-        <SectionTitle>Certificados & <em>reconhecimentos</em></SectionTitle>
+        <div data-aos="fade-up" data-aos-duration="700">
+          <SectionLabel>Conquistas</SectionLabel>
+          <SectionTitle>Certificados & <em>reconhecimentos</em></SectionTitle>
+        </div>
 
         <div className={styles.certGrid}>
-          {CERTS.map((cert) => (
+          {CERTS.map((cert, i) => (
             <div
               key={cert.id}
               className={styles.certCard}
-              style={{backgroundImage: `url(${cert.file})`, backgroundSize: "cover"}}
+              style={{ backgroundImage: `url(${cert.file})`, backgroundSize: "cover" }}
               onClick={() => setLightbox(cert.file)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === "Enter" && setLightbox(cert.file)}
               aria-label={`Abrir ${cert.label}`}
+              data-aos="flip-left"
+              data-aos-delay={i * 150}
+              data-aos-duration="700"
             >
               <div className={styles.certPlaceholder}>
                 <Bx name="bxs-medal" className={styles.certIcon} />
@@ -833,11 +878,17 @@ function ContactSection() {
   return (
     <section id="contato" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
-        <SectionLabel>Vamos conversar</SectionLabel>
-        <SectionTitle>Entre em <em>contato</em></SectionTitle>
+        <div data-aos="fade-up" data-aos-duration="700">
+          <SectionLabel>Vamos conversar</SectionLabel>
+          <SectionTitle>Entre em <em>contato</em></SectionTitle>
+        </div>
 
         <div className={styles.contactGrid}>
-          <div>
+          <div
+            data-aos="fade-right"
+            data-aos-duration="800"
+            data-aos-delay="100"
+          >
             <form onSubmit={handleSubmit} className={styles.contactForm} noValidate>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Nome</label>
@@ -886,7 +937,13 @@ function ContactSection() {
             </div>
           </div>
 
-          <EmaBot />
+          <div
+            data-aos="fade-left"
+            data-aos-duration="800"
+            data-aos-delay="200"
+          >
+            <EmaBot />
+          </div>
         </div>
       </div>
     </section>
@@ -954,6 +1011,17 @@ function WhatsAppFloat() {
 // ─────────────────────────────────────────────
 export default function Home() {
   const { dark, toggle } = useDarkMode();
+
+  useEffect(() => {
+    import('aos').then((AOS) => {
+      AOS.default.init({
+        duration: 700,
+        once: true,
+        offset: 80,
+        easing: "ease-out-cubic",
+      });
+    });
+  }, []);
 
   return (
     <>
