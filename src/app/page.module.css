@@ -733,6 +733,7 @@
   overflow: hidden;
   background: var(--bg-secondary);
   position: relative;
+  background-size: cover;
 }
 
 .projectImg {
@@ -749,11 +750,15 @@
 .projectImgPh {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--pink-pale) 0%, var(--bg-secondary) 100%);
+  background: linear-gradient(135deg, rgba(245, 208, 226, 0.30) 0%, rgba(237, 234, 230, 0.30) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 3rem;
+}
+
+[data-theme='dark'] .projectImgPh, [data-theme='dark'] .certPlaceholder {
+  background: linear-gradient(135deg, rgba(224, 85, 138, 0.25) 0%, rgba(26, 21, 32, 0.25) 100%);
 }
 
 .projectBody {
@@ -817,7 +822,6 @@
 
 .certCard {
   background: var(--bg-card);
-  border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   overflow: hidden;
   position: relative;
@@ -841,7 +845,7 @@
 .certPlaceholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--pink-pale) 0%, var(--bg-secondary) 100%);
+  background: linear-gradient(135deg, rgba(245, 208, 226, 0.30) 0%, rgba(237, 234, 230, 0.30) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;

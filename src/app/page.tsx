@@ -8,7 +8,7 @@ import { ChatMessage, Techs } from "@/type/techs";
 import RoadMapSection from "./RoadMapSection";
 
 // ─────────────────────────────────────────────
-// BOXICONS — Componente wrapper
+// BOXICONS & FONT AWESOME — Componente wrapper
 // ─────────────────────────────────────────────
 function Bx({
   name,
@@ -19,6 +19,18 @@ function Bx({
   className?: string;
   style?: React.CSSProperties;
 }) {
+  // Font Awesome icons
+  if (name.startsWith('fa-')) {
+    return (
+      <i
+        className={`fa-brands ${name}${className ? " " + className : ""}`}
+        style={style}
+        aria-hidden="true"
+      />
+    );
+  }
+  
+  // Boxicons (default)
   return (
     <i
       className={`bx ${name}${className ? " " + className : ""}`}
@@ -47,6 +59,23 @@ const TECH_LABELS: Record<Techs, string> = {
   CODEIGNITER: "CodeIgniter", NEXT_JS: "Next.js",
 };
 
+const TECH_ICONS: Record<Techs, string> = {
+  NEXT_JS: "bx-rocket",
+  REACT: "bxl-react",
+  TYPESCRIPT: "bxl-typescript",
+  JAVASCRIPT: "bxl-javascript",
+  NODE_JS: "bxl-nodejs",
+  SPRING_BOOT: "bxl-spring-boot",
+  JAVA: "bxl-java",
+  PHP: "bxl-php",
+  LARAVEL: "fa-laravel",
+  CODEIGNITER: "bx-code-block",
+  REACT_NATIVE: "bxl-react",
+  DOCKER: "bxl-docker",
+  POSTGRESQL: "bx-data",
+  MYSQL: "bx-data",
+};
+
 const PROJECTS = [
   {
     id: "ttravel",
@@ -55,7 +84,6 @@ const PROJECTS = [
     image: "/ttravel.png",
     link: "https://ttravelling.netlify.app/",
     tags: ["Next.js", "IBGE API", "OpenRouteService"],
-    icon: "bx-map-alt",
   },
   {
     id: "academia",
@@ -64,7 +92,6 @@ const PROJECTS = [
     image: "/academia.png",
     link: "https://front-academia-augusto.vercel.app/",
     tags: ["React.js", "Node.js", "PostgreSQL"],
-    icon: "bx-dumbbell",
   },
   {
     id: "blog",
@@ -73,7 +100,6 @@ const PROJECTS = [
     image: "/blog.png",
     link: "https://blog-3bk5.onrender.com/",
     tags: ["Node.js", "Express", "Auth"],
-    icon: "bx-pencil",
   },
   {
     id: "portfolio",
@@ -82,8 +108,25 @@ const PROJECTS = [
     image: "/portfolio.png",
     link: "#",
     tags: ["Next.js", "TypeScript", "CSS Modules"],
-    icon: "bx-briefcase",
   },
+  {
+    id: "girlschatmobile",
+    title: "GirlsChat (Mobile)",
+    description: "Chat desenvolvido para/por mulheres.",
+    image: "/chat.png",
+    link: "",
+    tags: ["React Native", "TypeScript"],
+    icon: "bx-robot",
+  },
+  {
+    id: "girlschatapi",
+    title: "GirlsChat (API)",
+    description: "Back-end do chat desenvolvido (GirlsChat).",
+    image: "/chat.png",
+    link: "https://girls-chat-api.onrender.com",
+    tags: ["AdonisJS", "TypeScript", "WebSocket", "JWT", "PostgreSQL"],
+    icon: "bx-robot",
+  }
 ];
 
 const ROADMAP = [
@@ -146,9 +189,9 @@ const ROADMAP = [
 ];
 
 const CERTS = [
-  { id: "cert1", label: "Certificado 1", file: "/cert1.jpg" },
-  { id: "cert2", label: "Certificado 2", file: "/cert2.jpg" },
-  { id: "cert3", label: "Certificado 3", file: "/cert3.jpg" },
+  { id: "cert1", label: "Segurança da Informação", file: "/certs/cert1.webp" },
+  { id: "cert2", label: "PHPeste", file: "/certs/cert2.webp" },
+  { id: "cert3", label: "Rec'n Play", file: "/certs/cert3.webp" },
 ];
 
 // ─────────────────────────────────────────────
@@ -408,7 +451,7 @@ function HeroSection() {
 
         <div className={styles.heroImage}>
           <div className={styles.heroImageRing}>
-            <div className={styles.heroPhotoPh}>EM</div>
+            <div className={styles.heroPhotoPh}></div>
             <div className={`${styles.heroBadge} ${styles.heroBadge1}`}>
               <span className={styles.heroBadgeDot} />
               Disponível para projetos
@@ -454,7 +497,7 @@ function SobreSection() {
                 { n: "7+", l: "Anos codando" },
                 { n: "14", l: "Tecnologias" },
                 { n: "4+", l: "Projetos" },
-                { n: "1", l: "Artigo publicado" },
+                { n: "1", l: "Artigo escrito" },
               ].map((s) => (
                 <div key={s.l} className={styles.statCard}>
                   <span className={styles.statNumber}>{s.n}</span>
@@ -518,11 +561,10 @@ function TechsSection() {
               onKeyDown={(e) => e.key === "Enter" && setSelected(selected === tech ? null : tech)}
               aria-pressed={selected === tech}
             >
-              <img
-                src={tech === "NEXT_JS" ? "/next_js.svg" : `/${tech.toLowerCase()}.png`}
-                alt={TECH_LABELS[tech]}
+              <Bx
+                name={TECH_ICONS[tech]}
                 className={styles.techCardIcon}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                style={{ fontSize: "2.5rem", color: "var(--pink-vivid)" }}
               />
               <span className={styles.techCardName}>{TECH_LABELS[tech]}</span>
             </div>
@@ -555,14 +597,16 @@ function ProjectsSection() {
     <section id="projetos" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
         <SectionLabel>Portfólio</SectionLabel>
-        <SectionTitle>Projetos que <em>constroí</em></SectionTitle>
+        <SectionTitle>Projetos que <em>construí</em></SectionTitle>
 
         <div className={styles.projectGrid}>
           {PROJECTS.map((project) => (
             <div key={project.id} className={styles.projectCard}>
-              <div className={styles.projectImageWrap}>
+              <div className={styles.projectImageWrap} style={{ backgroundImage: `url(${project.image})` }}>
                 <div className={styles.projectImgPh}>
-                  <Bx name={project.icon} style={{ fontSize: "3.5rem", color: "var(--pink-soft)" }} />
+                  {project.icon && (
+                    <Bx name={project.icon} style={{ fontSize: "2.5rem", color: "var(--pink-vivid)" }} />
+                  )}
                 </div>
               </div>
               <div className={styles.projectBody}>
@@ -616,6 +660,7 @@ function CertsSection() {
             <div
               key={cert.id}
               className={styles.certCard}
+              style={{backgroundImage: `url(${cert.file})`, backgroundSize: "cover"}}
               onClick={() => setLightbox(cert.file)}
               role="button"
               tabIndex={0}

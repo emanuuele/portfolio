@@ -1,6 +1,21 @@
 import type { Metadata } from "next";
+import { Epilogue, DM_Serif_Display } from 'next/font/google';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'boxicons/css/boxicons.min.css'
 import "./globals.css";
+
+const epilogue = Epilogue({
+  subsets: ['latin'],
+  variable: '--font-epilogue',
+  display: 'swap',
+});
+
+const dmSerif = DM_Serif_Display({
+  weight: ['400'],
+  subsets: ['latin'],
+  variable: '--font-dm-serif',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "Emanuele Maria — Desenvolvedora Full-Stack",
@@ -37,7 +52,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+      <body className={`${epilogue.variable} ${dmSerif.variable}`}>{children}</body>
     </html>
   );
 }

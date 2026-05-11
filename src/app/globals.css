@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=DM+Serif+Display:ital@0;1&display=swap');
+/* Fontes são carregadas via next/font no layout.tsx */
 
 /* ============================================================
    SISTEMA DE VARIÁVEIS CSS — TEMA CLARO (PADRÃO)
@@ -100,7 +100,7 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-epilogue, 'Epilogue', sans-serif);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color var(--transition-mid), color var(--transition-mid);
