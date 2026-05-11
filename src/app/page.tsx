@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import Chat from "./components/chat";
 import techsData from "../techs/techs.json";
 import { ChatMessage, Techs } from "@/type/techs";
+import RoadMapSection from "./RoadMapSection";
 
 // ─────────────────────────────────────────────
 // BOXICONS — Componente wrapper
@@ -541,64 +542,6 @@ function TechsSection() {
             <p className={styles.techDescText}>{(techsData as Record<string, string>)[selected]}</p>
           </div>
         )}
-      </div>
-    </section>
-  );
-}
-
-// ─────────────────────────────────────────────
-// ROADMAP
-// ─────────────────────────────────────────────
-function RoadMapSection() {
-  return (
-    <section id="roadmap" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-secondary)", overflow: "hidden" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
-        <SectionLabel>Trajetória</SectionLabel>
-        <SectionTitle>A minha <em>jornada</em></SectionTitle>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
-          Cada marco, uma conquista. Cada ano, uma nova versão.
-        </p>
-
-        <div className={styles.roadmapTrack}>
-          <div className={styles.roadmapLine} />
-          <div className={styles.roadmapItems}>
-            {ROADMAP.map((item, i) => (
-              <div key={i} className={styles.roadmapItem}>
-                <div className={styles.roadmapLeft}>
-                  {item.side === "left" && (
-                    <div className={styles.roadmapCard}>
-                      <p className={styles.roadmapYear}>{item.year}</p>
-                      <h4 className={styles.roadmapCardTitle}>{item.title}</h4>
-                      <p className={styles.roadmapCardDesc}>{item.description}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.roadmapNode}>
-                  <div className={`${styles.roadmapDot} ${item.highlight ? styles.roadmapDotHighlight : ""}`}>
-                    <Bx
-                      name={item.icon}
-                      style={{
-                        fontSize: "1.2rem",
-                        color: item.highlight ? "#fff" : "var(--pink-vivid)",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.roadmapRight}>
-                  {item.side === "right" && (
-                    <div className={styles.roadmapCard}>
-                      <p className={styles.roadmapYear}>{item.year}</p>
-                      <h4 className={styles.roadmapCardTitle}>{item.title}</h4>
-                      <p className={styles.roadmapCardDesc}>{item.description}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

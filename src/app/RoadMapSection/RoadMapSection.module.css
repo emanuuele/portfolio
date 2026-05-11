@@ -1,0 +1,535 @@
+@import "../globals.css";
+/* ================================================================
+   ROADMAP — CSS Module
+   Usa exclusivamente as CSS vars definidas em globals.css
+   ================================================================ */
+
+/* ── Seção ──────────────────────────────────────────────── */
+.section {
+  position: relative;
+  padding: clamp(80px, 10vw, 140px) 0;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+/* ── Fundo decorativo ───────────────────────────────────── */
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bgOrb1 {
+  position: absolute;
+  top: -200px;
+  left: -160px;
+  width: 700px;
+  height: 700px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, var(--pink-glow) 0%, transparent 65%);
+}
+
+.bgOrb2 {
+  position: absolute;
+  bottom: -80px;
+  right: -100px;
+  width: 480px;
+  height: 480px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle, var(--pink-glow) 0%, transparent 65%);
+  opacity: 0.4;
+}
+
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 80% 65% at 50% 50%, black 20%, transparent 100%);
+  opacity: 0.35;
+}
+
+/* ── Container ──────────────────────────────────────────── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 60px);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.headerVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pink-vivid);
+  margin-bottom: 16px;
+}
+
+.eyebrowLine {
+  display: block;
+  width: 32px;
+  height: 1.5px;
+  background: var(--pink-vivid);
+  border-radius: var(--radius-full);
+  opacity: 0.6;
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  color: var(--text-primary);
+  line-height: 1.08;
+  margin-bottom: 18px;
+}
+
+.sectionTitle em {
+  font-style: italic;
+  color: var(--pink-vivid);
+}
+
+.sectionSub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 460px;
+  margin: 0 auto 36px;
+  line-height: 1.8;
+}
+
+/* Legenda */
+.legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 14px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.legendDot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+/* ── Timeline wrapper ───────────────────────────────────── */
+.timeline {
+  position: relative;
+}
+
+/* Linha vertical central */
+.timelineLine {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 28px;
+  bottom: 28px;
+  width: 1.5px;
+  background: var(--border-light);
+  z-index: 0;
+  overflow: hidden;
+}
+
+.timelineLineFill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--pink-vivid) 15%,
+    var(--pink-soft) 55%,
+    var(--pink-vivid) 85%,
+    transparent 100%
+  );
+  opacity: 0.3;
+  animation: linePulse 5s ease-in-out infinite;
+}
+
+@keyframes linePulse {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 0.5; }
+}
+
+/* ── Row ─────────────────────────────────────────────────── */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  align-items: start;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 52px;
+}
+
+.rowDesktopLeft  { padding-right: 30px; }
+.rowDesktopRight { padding-left: 30px; }
+.rowCenter {
+  display: flex;
+  justify-content: center;
+  padding-top: 32px;
+}
+
+.rowMobile { display: none; }
+
+/* ── Nó central ─────────────────────────────────────────── */
+.nodeWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--transition-mid),
+    transform var(--transition-mid) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nodeVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Anel pulsante — só no highlight */
+.nodeRing {
+  position: absolute;
+  inset: -8px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--accent, var(--pink-vivid));
+  opacity: 0.35;
+  animation: ringPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.35; }
+  50%       { transform: scale(1.35); opacity: 0; }
+}
+
+.nodeDot {
+  position: relative;
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  color: var(--accent, var(--pink-vivid));
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nodeDot:hover {
+  transform: scale(1.12);
+  box-shadow: var(--shadow-md);
+}
+
+.nodeDotActive {
+  background: var(--accent, var(--pink-vivid));
+  color: var(--text-on-pink) !important;
+  border-color: var(--accent, var(--pink-vivid));
+  box-shadow: var(--shadow-pink);
+  animation: pulse-ring 2.4s infinite;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  opacity: 0;
+  transition:
+    opacity var(--transition-slow) var(--delay, 0s),
+    transform var(--transition-slow) var(--delay, 0s),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.cardLeft  { transform: translateX(-40px) translateY(10px); }
+.cardRight { transform: translateX(40px)  translateY(10px); }
+
+.cardVisible {
+  opacity: 1;
+  transform: translateX(0) translateY(0) !important;
+}
+
+.card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-mid);
+}
+
+.cardHighlight {
+  border-color: var(--border-mid);
+  box-shadow: var(--shadow-pink);
+}
+
+/* Linha accent lateral */
+.sideAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent, var(--pink-vivid));
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.card:hover .sideAccent { opacity: 1; }
+
+/* ── Imagem ──────────────────────────────────────────────── */
+.cardImgWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  /* Isolate cria contexto para mix-blend-mode funcionar */
+  isolation: isolate;
+}
+
+/* Camada 1 — imagem de fundo: esticada, desfocada, escurecida */
+.cardImgBg {
+  object-fit: cover;
+  object-position: center;
+  filter: blur(14px) brightness(0.45) saturate(1.3);
+  transform: scale(1.1); /* evita borda branca do blur */
+  transition: filter var(--transition-slow);
+}
+
+.card:hover .cardImgBg {
+  filter: blur(16px) brightness(0.5) saturate(1.5);
+}
+
+/* Camada 2 — imagem principal: contain, centralizada */
+.cardImg {
+  object-fit: contain;
+  object-position: center;
+  padding: 10px 14px;
+  transition: transform var(--transition-slow);
+  z-index: 2;
+}
+
+.card:hover .cardImg { transform: scale(1.04); }
+
+/* Granulação (SVG noise via pseudo-elemento) */
+.cardImgWrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: overlay;
+}
+
+/* Overlay gradiente — funde a área inferior com o fundo do card */
+.cardImgOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    var(--bg-card) 100%
+  );
+  opacity: 0.8;
+}
+
+/* Número flutuante sobre a imagem */
+.indexNum {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-style: italic;
+  line-height: 1;
+  color: var(--text-on-pink);
+  opacity: 0.18;
+  user-select: none;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.card:hover .indexNum { opacity: 0.32; }
+
+/* Chip de categoria */
+.chip {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  z-index: 2;
+  padding: 3px 11px;
+  border-radius: var(--radius-full);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-on-pink);
+  background: var(--accent, var(--pink-vivid));
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Corpo ───────────────────────────────────────────────── */
+.cardBody {
+  padding: 20px 22px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cardYear {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent, var(--pink-vivid));
+}
+
+.cardIconWrap {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pink-pale);
+  color: var(--accent, var(--pink-vivid));
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.cardDesc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  flex: 1;
+}
+
+/* ── Barra shimmer (highlight) ──────────────────────────── */
+.shimmerBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--pink-vivid),
+    var(--pink-soft),
+    var(--pink-mid),
+    transparent
+  );
+  background-size: 250% 100%;
+  animation: shimmerMove 2.8s linear infinite;
+}
+
+@keyframes shimmerMove {
+  0%   { background-position: -100% 0; }
+  100% { background-position: 200%  0; }
+}
+
+/* ================================================================
+   RESPONSIVIDADE
+   ================================================================ */
+
+@media (max-width: 980px) {
+  .row {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    margin-bottom: 36px;
+  }
+
+  .rowDesktopLeft  { display: none; }
+  .rowDesktopRight { display: none; }
+  .rowCenter { padding-top: 20px; justify-content: flex-start; padding-left: 4px; }
+  .rowMobile { display: block; padding-left: 16px; }
+
+  .timelineLine { left: 27px; transform: none; }
+  .cardImgWrap  { aspect-ratio: 16 / 7; }
+}
+
+@media (max-width: 600px) {
+  .row { grid-template-columns: 44px 1fr; }
+
+  .nodeDot  { width: 40px; height: 40px; }
+  .nodeRing { inset: -6px; }
+
+  .timelineLine { left: 21px; }
+  .cardImgWrap  { aspect-ratio: 16 / 6; }
+
+  .cardTitle  { font-size: 1rem; }
+  .indexNum   { font-size: 1.7rem; }
+  .sectionTitle { font-size: clamp(2rem, 7vw, 2.8rem); }
+
+  .legend {
+    gap: 12px;
+    padding: 12px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .nodeWrap { transition: none; }
+  .shimmerBar, .timelineLineFill, .nodeRing { animation: none; }
+}
