@@ -354,7 +354,7 @@ function Header({ dark, toggleDark }: { dark: boolean; toggleDark: () => void })
     <>
       <header className={styles.header}>
         <a href="#" className={styles.logo}>
-          ema<span>.</span>dev
+          <span>&lt; emanuele maria / &gt;</span>
         </a>
         <nav className={styles.nav}>
           <ul className={styles.navLinks}>
@@ -903,7 +903,7 @@ function Footer() {
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
         <p style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", color: "var(--pink-vivid)" }}>
-          ema<span style={{ color: "var(--text-primary)" }}>.</span>dev
+          <span>&lt; emanuele maria / &gt;</span>
         </p>
         <div className={styles.footerLinks}>
           {links.map((link) => (
