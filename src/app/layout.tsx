@@ -19,6 +19,9 @@ const dmSerif = DM_Serif_Display({
 
 export const metadata: Metadata = {
   title: "Emanuele Maria — Desenvolvedora Full-Stack",
+  icons: {
+    icon: "/logo.png",
+  },
   description:
     "Portfólio de Emanuele Maria, desenvolvedora Full-Stack especialista em React, Next.js, Spring Boot e muito mais.",
   keywords: ["desenvolvedora", "full-stack", "react", "next.js", "spring boot", "portfólio"],
