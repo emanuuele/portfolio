@@ -6,6 +6,7 @@ import Chat from "./components/chat";
 import techsData from "../techs/techs.json";
 import { ChatMessage, Techs } from "@/type/techs";
 import RoadMapSection from "./RoadMapSection";
+import { NextRequest } from "next/server";
 
 // ─────────────────────────────────────────────
 // BOXICONS & FONT AWESOME — Componente wrapper
@@ -863,9 +864,15 @@ function ContactSection() {
       setTimeout(() => setStatus("idle"), 3000);
       return;
     }
-    setStatus("sent");
-    setForm({ name: "", email: "", message: "" });
-    setTimeout(() => setStatus("idle"), 4000);
+    fetch("/api/send-email", {
+      body: JSON.stringify(form),
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+    }).finally(() => {
+      setStatus("sent");
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setStatus("idle"), 4000);
+    });
   };
 
   const socials = [
