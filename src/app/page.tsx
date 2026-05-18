@@ -7,6 +7,7 @@ import techsData from "../techs/techs.json";
 import { ChatMessage, Techs } from "@/type/techs";
 import RoadMapSection from "./RoadMapSection";
 import { NextRequest } from "next/server";
+import { log } from "node:console";
 
 // ─────────────────────────────────────────────
 // BOXICONS & FONT AWESOME — Componente wrapper
@@ -761,6 +762,9 @@ function EmaBot() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const firstRenderRef = useRef(true);
@@ -776,26 +780,66 @@ function EmaBot() {
     setMessages((prev) => [...prev, { id: Date.now().toString(), from, text, timestamp: new Date() }]);
   };
 
+  const fmt = (d: Date) => d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
   const handleOption = (key: string, label: string) => {
     addMessage("user", label);
     setTimeout(() => addMessage("bot", BOT_ANSWERS[key] || "Hmm, não tenho uma resposta para isso ainda!"), 500);
   };
 
-  const handleSend = () => {
-    const text = input.trim();
-    if (!text) return;
-    addMessage("user", text);
-    setInput("");
-    setTimeout(() => {
-      const lower = text.toLowerCase();
-      const key = Object.keys(BOT_ANSWERS).find((k) => lower.includes(k));
-      if (key) addMessage("bot", BOT_ANSWERS[key]);
-      else if (lower.match(/ola|oi|olá|hey|hi/)) addMessage("bot", BOT_ANSWERS["ola"]);
-      else addMessage("bot", "Pode me perguntar sobre projetos, techs, contato ou trajetória!");
-    }, 600);
-  };
+  async function initChatWithGirlsChat() {
+    const deviceId = localStorage.getItem("girlschat_device_id") || `visitor-${Date.now()}`;
+    const init = await fetch('https://girls-chat-api.onrender.com/portfolio-chat/init?deviceId=' + deviceId);
+    const { token, user } = await init.json();
+    localStorage.setItem("girlschat_device_id", deviceId);
+    setToken(token);
+    setUserId(user.id);
+  }
 
-  const fmt = (d: Date) => d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  async function loadMessagesFromGirlsChat() {
+    const msgs = await fetch('https://girls-chat-api.onrender.com/portfolio-chat/messages', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await msgs.json();
+    console.log("Mensagens do GirlsChat:", data.messages);
+    if (data.messages.length > 0) {
+    const newBotMessages = data.messages.filter((m: any) => m.from === "bot" && !messages.some((msg) => msg.id === m.id));
+      if (newBotMessages.length > 0) {
+        setMessages((prev) => [...prev, ...newBotMessages.map((m: any) => ({
+          id: m.id,
+          from: m.sentBy != userId ? "bot" : "user",
+          text: m.text,
+          timestamp: new Date(m.createdAt),
+        }))]);
+    }
+    }
+  }
+
+  async function sendMessageToGirlsChat(text: string) {
+    if (!token) return;
+    setLoading(true);
+    await fetch('https://girls-chat-api.onrender.com/portfolio-chat/messages/send', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ text })
+    });
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    initChatWithGirlsChat();
+  }, [])
+
+  useEffect(() => {
+    if (!token) return;
+    const interval = setInterval(() => {
+      loadMessagesFromGirlsChat();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [token]);
 
   return (
     <div className={styles.chatWrap}>
@@ -840,9 +884,22 @@ function EmaBot() {
           placeholder="Escreva sua mensagem..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          onKeyDown={async (e) => {
+            if (e.key !== "Enter") return;
+            await sendMessageToGirlsChat(input);
+            setInput("");
+          }}
+          disabled={loading}
         />
-        <button className={styles.chatSendBtn} onClick={handleSend} aria-label="Enviar">
+        <button
+          className={styles.chatSendBtn}
+          onClick={async () => {
+            await sendMessageToGirlsChat(input);
+            setInput("");
+          }}
+          aria-label="Enviar"
+          disabled={loading || !input.trim()}
+        >
           <Bx name="bx-send" style={{ fontSize: "1.1rem" }} />
         </button>
       </div>
