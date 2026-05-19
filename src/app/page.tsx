@@ -765,6 +765,7 @@ function EmaBot() {
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [chatId, setChatId] = useState<number | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const firstRenderRef = useRef(true);
@@ -789,42 +790,41 @@ function EmaBot() {
 
   async function initChatWithGirlsChat() {
     const deviceId = localStorage.getItem("girlschat_device_id") || `visitor-${Date.now()}`;
-    const init = await fetch('https://girls-chat-api.onrender.com/portfolio-chat/init?deviceId=' + deviceId);
-    const { token, user } = await init.json();
+    const init = await fetch('http://localhost:3333/portfolio-chat/init?deviceId=' + deviceId);
+    
+    const data = await init.json();    
+    setChatId(data.chatId)
     localStorage.setItem("girlschat_device_id", deviceId);
-    setToken(token);
-    setUserId(user.id);
+    setToken(data.token);
+    setUserId(data.user.id);
   }
 
-  async function loadMessagesFromGirlsChat() {
-    const msgs = await fetch('https://girls-chat-api.onrender.com/portfolio-chat/messages', {
-      headers: { 'Authorization': `Bearer ${token}` }
+  async function loadMessagesFromGirlsChat() {    
+    const msgs = await fetch('http://localhost:3333/portfolio-chat/messages/' + chatId, {
+      headers: { 'Authorization': `Bearer ${token}` },
     });
     const data = await msgs.json();
-    console.log("Mensagens do GirlsChat:", data.messages);
-    if (data.messages.length > 0) {
-    const newBotMessages = data.messages.filter((m: any) => m.from === "bot" && !messages.some((msg) => msg.id === m.id));
-      if (newBotMessages.length > 0) {
-        setMessages((prev) => [...prev, ...newBotMessages.map((m: any) => ({
-          id: m.id,
-          from: m.sentBy != userId ? "bot" : "user",
-          text: m.text,
-          timestamp: new Date(m.createdAt),
-        }))]);
-    }
+    const newBotMessages = data.messages;
+    if (newBotMessages.messages && newBotMessages.messages.length > 0) {
+      setMessages((prev) => [...prev, ...newBotMessages.messages.map((m: any) => ({
+        id: m.id,
+        from: m.sent_by == userId ? "user" : "bot",
+        text: m.text,
+        timestamp: new Date(m.createdAt),
+      }))]);
     }
   }
 
   async function sendMessageToGirlsChat(text: string) {
     if (!token) return;
     setLoading(true);
-    await fetch('https://girls-chat-api.onrender.com/portfolio-chat/messages/send', {
+    await fetch('http://localhost:3333/portfolio-chat/messages/send', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ text, chatId })
     });
     setLoading(false);
   }
@@ -835,10 +835,7 @@ function EmaBot() {
 
   useEffect(() => {
     if (!token) return;
-    const interval = setInterval(() => {
-      loadMessagesFromGirlsChat();
-    }, 3000);
-    return () => clearInterval(interval);
+    loadMessagesFromGirlsChat();
   }, [token]);
 
   return (
