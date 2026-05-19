@@ -2,12 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import styles from "./page.module.css";
-import Chat from "./components/chat";
 import techsData from "../techs/techs.json";
 import { ChatMessage, Techs } from "@/type/techs";
 import RoadMapSection from "./RoadMapSection";
-import { NextRequest } from "next/server";
-import { log } from "node:console";
+import { io, Socket } from "socket.io-client";
 
 // ─────────────────────────────────────────────
 // BOXICONS & FONT AWESOME — Componente wrapper
@@ -21,7 +19,7 @@ function Bx({
   className?: string;
   style?: React.CSSProperties;
 }) {
-  if (name.startsWith('fa-')) {
+  if (name.startsWith("fa-")) {
     return (
       <i
         className={`fa-brands ${name}${className ? " " + className : ""}`}
@@ -43,19 +41,37 @@ function Bx({
 // DADOS
 // ─────────────────────────────────────────────
 const TECHS: Techs[] = [
-  "NEXT_JS", "REACT", "TYPESCRIPT", "JAVASCRIPT",
-  "NODE_JS", "SPRING_BOOT", "JAVA",
-  "PHP", "LARAVEL", "CODEIGNITER",
-  "REACT_NATIVE", "DOCKER",
-  "POSTGRESQL", "MYSQL",
+  "NEXT_JS",
+  "REACT",
+  "TYPESCRIPT",
+  "JAVASCRIPT",
+  "NODE_JS",
+  "SPRING_BOOT",
+  "JAVA",
+  "PHP",
+  "LARAVEL",
+  "CODEIGNITER",
+  "REACT_NATIVE",
+  "DOCKER",
+  "POSTGRESQL",
+  "MYSQL",
 ];
 
 const TECH_LABELS: Record<Techs, string> = {
-  SPRING_BOOT: "Spring Boot", REACT: "React", NODE_JS: "Node.js",
-  DOCKER: "Docker", TYPESCRIPT: "TypeScript", JAVA: "Java",
-  JAVASCRIPT: "JavaScript", REACT_NATIVE: "React Native", MYSQL: "MySQL",
-  POSTGRESQL: "PostgreSQL", LARAVEL: "Laravel", PHP: "PHP",
-  CODEIGNITER: "CodeIgniter", NEXT_JS: "Next.js",
+  SPRING_BOOT: "Spring Boot",
+  REACT: "React",
+  NODE_JS: "Node.js",
+  DOCKER: "Docker",
+  TYPESCRIPT: "TypeScript",
+  JAVA: "Java",
+  JAVASCRIPT: "JavaScript",
+  REACT_NATIVE: "React Native",
+  MYSQL: "MySQL",
+  POSTGRESQL: "PostgreSQL",
+  LARAVEL: "Laravel",
+  PHP: "PHP",
+  CODEIGNITER: "CodeIgniter",
+  NEXT_JS: "Next.js",
 };
 
 const TECH_ICONS: Record<Techs, string> = {
@@ -79,7 +95,8 @@ const PROJECTS = [
   {
     id: "ttravel",
     title: "TTRAVEL",
-    description: "Calcula o custo de combustível em viagens, integrando APIs do IBGE e OpenRouteService.",
+    description:
+      "Calcula o custo de combustível em viagens, integrando APIs do IBGE e OpenRouteService.",
     image: "/ttravel.png",
     link: "https://ttravelling.netlify.app/",
     tags: ["Next.js", "IBGE API", "OpenRouteService"],
@@ -87,7 +104,8 @@ const PROJECTS = [
   {
     id: "academia",
     title: "Ah, cadê mia?",
-    description: "Sistema de gerenciamento de academia com controle de alunos, planos e pagamentos.",
+    description:
+      "Sistema de gerenciamento de academia com controle de alunos, planos e pagamentos.",
     image: "/academia.png",
     link: "https://front-academia-augusto.vercel.app/",
     tags: ["React.js", "Node.js", "PostgreSQL"],
@@ -95,7 +113,8 @@ const PROJECTS = [
   {
     id: "blog",
     title: "Blog",
-    description: "Projeto completo de blog com painel administrativo, autenticação JWT e CRUD.",
+    description:
+      "Projeto completo de blog com painel administrativo, autenticação JWT e CRUD.",
     image: "/blog.png",
     link: "https://blog-3bk5.onrender.com/",
     tags: ["Node.js", "Express", "Auth"],
@@ -103,7 +122,8 @@ const PROJECTS = [
   {
     id: "portfolio",
     title: "Portfólio",
-    description: "Este portfólio — desenvolvido com Next.js e TypeScript, foco em performance e SEO.",
+    description:
+      "Este portfólio — desenvolvido com Next.js e TypeScript, foco em performance e SEO.",
     image: "/portfolio.png",
     link: "#",
     tags: ["Next.js", "TypeScript", "CSS Modules"],
@@ -125,14 +145,15 @@ const PROJECTS = [
     link: "https://girls-chat-api.onrender.com",
     tags: ["AdonisJS", "TypeScript", "WebSocket", "JWT", "PostgreSQL"],
     icon: "bx-robot",
-  }
+  },
 ];
 
 const ROADMAP = [
   {
     year: "2019",
     title: "O primeiro passo",
-    description: "Início do curso Técnico em Informática no IFPE de Garanhuns. O começo de tudo.",
+    description:
+      "Início do curso Técnico em Informática no IFPE de Garanhuns. O começo de tudo.",
     icon: "bx-leaf",
     highlight: false,
     side: "right",
@@ -140,7 +161,8 @@ const ROADMAP = [
   {
     year: "2022",
     title: "Diploma conquistado",
-    description: "Conclusão e obtenção do diploma de Técnica em Informática pelo IFPE.",
+    description:
+      "Conclusão e obtenção do diploma de Técnica em Informática pelo IFPE.",
     icon: "bxs-graduation",
     highlight: false,
     side: "left",
@@ -148,7 +170,8 @@ const ROADMAP = [
   {
     year: "Jan 2023",
     title: "Primeira oportunidade",
-    description: "Conquista da primeira oportunidade de estágio na área — o sonho começando a se tornar realidade.",
+    description:
+      "Conquista da primeira oportunidade de estágio na área — o sonho começando a se tornar realidade.",
     icon: "bx-briefcase-alt-2",
     highlight: false,
     side: "right",
@@ -156,7 +179,8 @@ const ROADMAP = [
   {
     year: "Ago 2023",
     title: "Engenharia de Software",
-    description: "Início da graduação em Engenharia de Software na UPE de Surubim.",
+    description:
+      "Início da graduação em Engenharia de Software na UPE de Surubim.",
     icon: "bxs-school",
     highlight: false,
     side: "left",
@@ -164,7 +188,8 @@ const ROADMAP = [
   {
     year: "2024",
     title: "Produção Acadêmica",
-    description: 'Escrita do artigo "A utopia do mercado: Relação entre o mercado de trabalho e a empregabilidade do profissional de tecnologia".',
+    description:
+      'Escrita do artigo "A utopia do mercado: Relação entre o mercado de trabalho e a empregabilidade do profissional de tecnologia".',
     icon: "bx-file",
     highlight: false,
     side: "right",
@@ -172,7 +197,8 @@ const ROADMAP = [
   {
     year: "Abr 2024",
     title: "Desenvolvedora JR efetivada",
-    description: "Efetivação como Desenvolvedora Júnior — um marco de crescimento e reconhecimento profissional.",
+    description:
+      "Efetivação como Desenvolvedora Júnior — um marco de crescimento e reconhecimento profissional.",
     icon: "bx-rocket",
     highlight: false,
     side: "left",
@@ -180,7 +206,8 @@ const ROADMAP = [
   {
     year: "2026",
     title: "Excelência técnica",
-    description: "Homologação aprovada na Stone pela empresa atual — marco de excelência técnica e maturidade como desenvolvedora.",
+    description:
+      "Homologação aprovada na Stone pela empresa atual — marco de excelência técnica e maturidade como desenvolvedora.",
     icon: "bxs-star",
     highlight: true,
     side: "right",
@@ -197,11 +224,16 @@ const CERTS = [
 // EMABOT — Respostas & opções
 // ─────────────────────────────────────────────
 const BOT_ANSWERS: Record<string, string> = {
-  projetos: "Tenho 4 projetos no portfólio: TTRAVEL (cálculo de viagens), Ah, cadê mia? (gestão de academia), um Blog completo e este próprio Portfólio!",
-  techs: "Trabalho com React, Next.js, TypeScript, Node.js, Spring Boot, Java, Docker, PostgreSQL e muito mais! Explore a seção de Techs acima.",
-  contato: "Você pode me encontrar no LinkedIn (emanuelemds), GitHub (emanuuele) ou enviar um e-mail para emanuele.mdsilva@gmail.com",
-  sobre: "Sou a Emanuele! Desenvolvedora Full-Stack desde 2019, formada técnica pelo IFPE e cursando Engenharia de Software na UPE. Amo transformar ideias em código!",
-  curriculo: 'Você pode baixar meu currículo pelo botão "Baixar Currículo" no header ou na seção Hero. O HTML é convertido em PDF com Puppeteer na hora.',
+  projetos:
+    "Tenho 4 projetos no portfólio: TTRAVEL (cálculo de viagens), Ah, cadê mia? (gestão de academia), um Blog completo e este próprio Portfólio!",
+  techs:
+    "Trabalho com React, Next.js, TypeScript, Node.js, Spring Boot, Java, Docker, PostgreSQL e muito mais! Explore a seção de Techs acima.",
+  contato:
+    "Você pode me encontrar no LinkedIn (emanuelemds), GitHub (emanuuele) ou enviar um e-mail para emanuele.mdsilva@gmail.com",
+  sobre:
+    "Sou a Emanuele! Desenvolvedora Full-Stack desde 2019, formada técnica pelo IFPE e cursando Engenharia de Software na UPE. Amo transformar ideias em código!",
+  curriculo:
+    'Você pode baixar meu currículo pelo botão "Baixar Currículo" no header ou na seção Hero. O HTML é convertido em PDF com Puppeteer na hora.',
   ola: "Olá! Sou a EmaBot, assistente da Emanuele. Como posso te ajudar a conhecer melhor o trabalho dela?",
 };
 
@@ -225,9 +257,15 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function BtnPrimary({
-  href, onClick, children, download,
+  href,
+  onClick,
+  children,
+  download,
 }: {
-  href?: string; onClick?: () => void; children: React.ReactNode; download?: boolean;
+  href?: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+  download?: boolean;
 }) {
   if (href) {
     return (
@@ -242,13 +280,23 @@ function BtnPrimary({
       </a>
     );
   }
-  return <button onClick={onClick} className={styles.btnPrimary}>{children}</button>;
+  return (
+    <button onClick={onClick} className={styles.btnPrimary}>
+      {children}
+    </button>
+  );
 }
 
 function BtnSecondary({
-  href, onClick, children, download,
+  href,
+  onClick,
+  children,
+  download,
 }: {
-  href?: string; onClick?: () => void; children: React.ReactNode; download?: boolean;
+  href?: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+  download?: boolean;
 }) {
   if (href) {
     return (
@@ -263,7 +311,11 @@ function BtnSecondary({
       </a>
     );
   }
-  return <button onClick={onClick} className={styles.btnSecondary}>{children}</button>;
+  return (
+    <button onClick={onClick} className={styles.btnSecondary}>
+      {children}
+    </button>
+  );
 }
 
 // ─────────────────────────────────────────────
@@ -276,13 +328,19 @@ function useDarkMode() {
     const saved = localStorage.getItem("theme");
     const isDark = saved === "dark";
     setDark(isDark);
-    document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDark ? "dark" : "light",
+    );
   }, []);
 
   const toggle = useCallback(() => {
     setDark((prev) => {
       const next = !prev;
-      document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
+      document.documentElement.setAttribute(
+        "data-theme",
+        next ? "dark" : "light",
+      );
       localStorage.setItem("theme", next ? "dark" : "light");
       return next;
     });
@@ -337,7 +395,13 @@ function useTyping() {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function Header({ dark, toggleDark }: { dark: boolean; toggleDark: () => void }) {
+function Header({
+  dark,
+  toggleDark,
+}: {
+  dark: boolean;
+  toggleDark: () => void;
+}) {
   const [open, setOpen] = useState(false);
 
   const nav = [
@@ -359,7 +423,9 @@ function Header({ dark, toggleDark }: { dark: boolean; toggleDark: () => void })
           <ul className={styles.navLinks}>
             {nav.map((item) => (
               <li key={item.href}>
-                <a href={item.href} className={styles.navLink}>{item.label}</a>
+                <a href={item.href} className={styles.navLink}>
+                  {item.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -369,7 +435,10 @@ function Header({ dark, toggleDark }: { dark: boolean; toggleDark: () => void })
               onClick={toggleDark}
               aria-label="Alternar tema"
             >
-              <Bx name={dark ? "bx-sun" : "bx-moon"} style={{ fontSize: "1.2rem" }} />
+              <Bx
+                name={dark ? "bx-sun" : "bx-moon"}
+                style={{ fontSize: "1.2rem" }}
+              />
             </button>
             <a
               href="/api/curriculo"
@@ -384,13 +453,17 @@ function Header({ dark, toggleDark }: { dark: boolean; toggleDark: () => void })
               onClick={() => setOpen(!open)}
               aria-label="Menu"
             >
-              <span /><span /><span />
+              <span />
+              <span />
+              <span />
             </button>
           </div>
         </nav>
       </header>
 
-      <div className={`${styles.mobileMenu} ${open ? styles.mobileMenuOpen : ""}`}>
+      <div
+        className={`${styles.mobileMenu} ${open ? styles.mobileMenuOpen : ""}`}
+      >
         {nav.map((item) => (
           <a
             key={item.href}
@@ -433,7 +506,9 @@ function HeroSection() {
             <Bx name="bx-wave" /> Olá, mundo!
           </span>
           <h1 className={styles.heroTitle}>
-            Sou <em>Emanuele</em><br />Maria
+            Sou <em>Emanuele</em>
+            <br />
+            Maria
           </h1>
           <p className={styles.heroSubtitle}>
             {typed}
@@ -441,7 +516,8 @@ function HeroSection() {
           </p>
           <p className={styles.heroDesc}>
             Transformo ideias em interfaces elegantes e sistemas robustos.
-            Full-Stack desde 2019, com paixão por React, Spring Boot e boas práticas.
+            Full-Stack desde 2019, com paixão por React, Spring Boot e boas
+            práticas.
           </p>
           <div className={styles.heroCTAs}>
             <BtnPrimary href="#projetos">
@@ -466,7 +542,10 @@ function HeroSection() {
               Disponível para projetos
             </div>
             <div className={`${styles.heroBadge} ${styles.heroBadge2}`}>
-              <Bx name="bxs-trophy" style={{ color: "var(--pink-vivid)", fontSize: "1rem" }} />
+              <Bx
+                name="bxs-trophy"
+                style={{ color: "var(--pink-vivid)", fontSize: "1rem" }}
+              />
               7+ anos codando
             </div>
           </div>
@@ -481,8 +560,18 @@ function HeroSection() {
 // ─────────────────────────────────────────────
 function SobreSection() {
   return (
-    <section className={styles.sobre} id="sobre" style={{ padding: "clamp(80px,10vw,130px) 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
+    <section
+      className={styles.sobre}
+      id="sobre"
+      style={{ padding: "clamp(80px,10vw,130px) 0" }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 clamp(20px,5vw,60px)",
+        }}
+      >
         <SectionLabel>Quem sou eu</SectionLabel>
         <div className={styles.sobreGrid}>
           <div
@@ -490,20 +579,25 @@ function SobreSection() {
             data-aos="fade-right"
             data-aos-duration="800"
           >
-            <SectionTitle>Código, <em>paixão</em> & propósito</SectionTitle>
+            <SectionTitle>
+              Código, <em>paixão</em> & propósito
+            </SectionTitle>
             <p>
-              Lembro da primeira entrevista com meu primeiro chefe: ele me perguntou onde eu queria
-              chegar e eu disse <strong>"quero ser programadora Full-Stack"</strong>. Posso dizer que
-              atingi esse objetivo.
+              Lembro da primeira entrevista com meu primeiro chefe: ele me
+              perguntou onde eu queria chegar e eu disse{" "}
+              <strong>"quero ser programadora Full-Stack"</strong>. Posso dizer
+              que atingi esse objetivo.
             </p>
             <p>
-              Comecei a programar em 2019, quando entrei no IFPE de Garanhuns no curso Técnico de
-              Informática. Hoje sou desenvolvedora e curso Engenharia de Software na UPE de Surubim —
-              sempre em busca de novas fronteiras.
+              Comecei a programar em 2019, quando entrei no IFPE de Garanhuns no
+              curso Técnico de Informática. Hoje sou desenvolvedora e curso
+              Engenharia de Software na UPE de Surubim — sempre em busca de
+              novas fronteiras.
             </p>
             <p>
-              Acredito que bom código é aquele que resolve problemas reais com clareza, elegância e
-              responsabilidade. Cada projeto é uma oportunidade de aprender e crescer.
+              Acredito que bom código é aquele que resolve problemas reais com
+              clareza, elegância e responsabilidade. Cada projeto é uma
+              oportunidade de aprender e crescer.
             </p>
             <div className={styles.sobreStats}>
               {[
@@ -536,9 +630,21 @@ function SobreSection() {
               <SectionLabel>Formação</SectionLabel>
               <div className={styles.sobreFormacao}>
                 {[
-                  { icon: "bxs-school", title: "Técnico em Informática", desc: "IFPE — Garanhuns\n2019 – 2022" },
-                  { icon: "bxs-graduation", title: "Engenharia de Software", desc: "UPE — Surubim\n2023 – Em andamento" },
-                  { icon: "bx-file", title: "Produção Acadêmica", desc: '"A utopia do mercado" — 2024' },
+                  {
+                    icon: "bxs-school",
+                    title: "Técnico em Informática",
+                    desc: "IFPE — Garanhuns\n2019 – 2022",
+                  },
+                  {
+                    icon: "bxs-graduation",
+                    title: "Engenharia de Software",
+                    desc: "UPE — Surubim\n2023 – Em andamento",
+                  },
+                  {
+                    icon: "bx-file",
+                    title: "Produção Acadêmica",
+                    desc: '"A utopia do mercado" — 2024',
+                  },
                 ].map((f, i) => (
                   <div
                     key={f.title}
@@ -572,12 +678,32 @@ function TechsSection() {
   const [selected, setSelected] = useState<Techs | null>(null);
 
   return (
-    <section id="techs" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
+    <section
+      id="techs"
+      style={{
+        padding: "clamp(80px,10vw,130px) 0",
+        background: "var(--bg-primary)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 clamp(20px,5vw,60px)",
+        }}
+      >
         <div data-aos="fade-up" data-aos-duration="700">
           <SectionLabel>Stack tecnológica</SectionLabel>
-          <SectionTitle>Ferramentas que <em>domino</em></SectionTitle>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.95rem", marginBottom: 8 }}>
+          <SectionTitle>
+            Ferramentas que <em>domino</em>
+          </SectionTitle>
+          <p
+            style={{
+              color: "var(--text-muted)",
+              fontSize: "0.95rem",
+              marginBottom: 8,
+            }}
+          >
             Clique em qualquer tecnologia para saber como a utilizo.
           </p>
         </div>
@@ -590,7 +716,10 @@ function TechsSection() {
               onClick={() => setSelected(selected === tech ? null : tech)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && setSelected(selected === tech ? null : tech)}
+              onKeyDown={(e) =>
+                e.key === "Enter" &&
+                setSelected(selected === tech ? null : tech)
+              }
               aria-pressed={selected === tech}
               data-aos="zoom-in"
               data-aos-delay={i * 50}
@@ -616,7 +745,9 @@ function TechsSection() {
               <Bx name="bx-x" style={{ fontSize: "1.1rem" }} />
             </button>
             <h3 className={styles.techDescTitle}>{TECH_LABELS[selected]}</h3>
-            <p className={styles.techDescText}>{(techsData as Record<string, string>)[selected]}</p>
+            <p className={styles.techDescText}>
+              {(techsData as Record<string, string>)[selected]}
+            </p>
           </div>
         )}
       </div>
@@ -629,11 +760,25 @@ function TechsSection() {
 // ─────────────────────────────────────────────
 function ProjectsSection() {
   return (
-    <section id="projetos" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
+    <section
+      id="projetos"
+      style={{
+        padding: "clamp(80px,10vw,130px) 0",
+        background: "var(--bg-primary)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 clamp(20px,5vw,60px)",
+        }}
+      >
         <div data-aos="fade-up" data-aos-duration="700">
           <SectionLabel>Portfólio</SectionLabel>
-          <SectionTitle>Projetos que <em>construí</em></SectionTitle>
+          <SectionTitle>
+            Projetos que <em>construí</em>
+          </SectionTitle>
         </div>
 
         <div className={styles.projectGrid}>
@@ -645,10 +790,16 @@ function ProjectsSection() {
               data-aos-delay={i * 100}
               data-aos-duration="700"
             >
-              <div className={styles.projectImageWrap} style={{ backgroundImage: `url(${project.image})` }}>
+              <div
+                className={styles.projectImageWrap}
+                style={{ backgroundImage: `url(${project.image})` }}
+              >
                 <div className={styles.projectImgPh}>
                   {project.icon && (
-                    <Bx name={project.icon} style={{ fontSize: "2.5rem", color: "var(--pink-vivid)" }} />
+                    <Bx
+                      name={project.icon}
+                      style={{ fontSize: "2.5rem", color: "var(--pink-vivid)" }}
+                    />
                   )}
                 </div>
               </div>
@@ -657,7 +808,9 @@ function ProjectsSection() {
                 <p className={styles.projectDesc}>{project.description}</p>
                 <div className={styles.projectTags}>
                   {project.tags.map((tag) => (
-                    <span key={tag} className={styles.projectTag}>{tag}</span>
+                    <span key={tag} className={styles.projectTag}>
+                      {tag}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -693,11 +846,25 @@ function CertsSection() {
   const [lightbox, setLightbox] = useState<string | null>(null);
 
   return (
-    <section id="certificados" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-secondary)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
+    <section
+      id="certificados"
+      style={{
+        padding: "clamp(80px,10vw,130px) 0",
+        background: "var(--bg-secondary)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 clamp(20px,5vw,60px)",
+        }}
+      >
         <div data-aos="fade-up" data-aos-duration="700">
           <SectionLabel>Conquistas</SectionLabel>
-          <SectionTitle>Certificados & <em>reconhecimentos</em></SectionTitle>
+          <SectionTitle>
+            Certificados & <em>reconhecimentos</em>
+          </SectionTitle>
         </div>
 
         <div className={styles.certGrid}>
@@ -705,7 +872,10 @@ function CertsSection() {
             <div
               key={cert.id}
               className={styles.certCard}
-              style={{ backgroundImage: `url(${cert.file})`, backgroundSize: "cover" }}
+              style={{
+                backgroundImage: `url(${cert.file})`,
+                backgroundSize: "cover",
+              }}
               onClick={() => setLightbox(cert.file)}
               role="button"
               tabIndex={0}
@@ -718,7 +888,15 @@ function CertsSection() {
               <div className={styles.certPlaceholder}>
                 <Bx name="bxs-medal" className={styles.certIcon} />
                 <span>{cert.label}</span>
-                <span style={{ fontSize: "0.76rem", opacity: 0.7, display: "flex", alignItems: "center", gap: 4 }}>
+                <span
+                  style={{
+                    fontSize: "0.76rem",
+                    opacity: 0.7,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                  }}
+                >
                   <Bx name="bx-zoom-in" /> Clique para ampliar
                 </span>
               </div>
@@ -729,8 +907,14 @@ function CertsSection() {
 
       {lightbox && (
         <div className={styles.lightbox} onClick={() => setLightbox(null)}>
-          <div className={styles.lightboxInner} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.lightboxClose} onClick={() => setLightbox(null)}>
+          <div
+            className={styles.lightboxInner}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className={styles.lightboxClose}
+              onClick={() => setLightbox(null)}
+            >
               <Bx name="bx-x" style={{ fontSize: "1.3rem" }} />
             </button>
             <img
@@ -762,10 +946,11 @@ function EmaBot() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
-  const [chatId, setChatId] = useState<number | null>(null)
+  const [chatId, setChatId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const firstRenderRef = useRef(true);
@@ -778,60 +963,116 @@ function EmaBot() {
   }, [messages]);
 
   const addMessage = (from: "user" | "bot", text: string) => {
-    setMessages((prev) => [...prev, { id: Date.now().toString(), from, text, timestamp: new Date() }]);
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now().toString(), from, text, timestamp: new Date() },
+    ]);
   };
 
-  const fmt = (d: Date) => d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  const fmt = (d: Date) =>
+    d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
   const handleOption = (key: string, label: string) => {
     addMessage("user", label);
-    setTimeout(() => addMessage("bot", BOT_ANSWERS[key] || "Hmm, não tenho uma resposta para isso ainda!"), 500);
+    setTimeout(
+      () =>
+        addMessage(
+          "bot",
+          BOT_ANSWERS[key] || "Hmm, não tenho uma resposta para isso ainda!",
+        ),
+      500,
+    );
   };
 
   async function initChatWithGirlsChat() {
-    const deviceId = localStorage.getItem("girlschat_device_id") || `visitor-${Date.now()}`;
-    const init = await fetch('http://localhost:3333/portfolio-chat/init?deviceId=' + deviceId);
-    
-    const data = await init.json();    
-    setChatId(data.chatId)
+    const deviceId =
+      localStorage.getItem("girlschat_device_id") || `visitor-${Date.now()}`;
+    const init = await fetch(
+      "https://girls-chat-api.onrender.com/portfolio-chat/init?deviceId=" +
+        deviceId,
+    );
+
+    const data = await init.json();
+    setChatId(data.chatId);
     localStorage.setItem("girlschat_device_id", deviceId);
     setToken(data.token);
     setUserId(data.user.id);
   }
 
-  async function loadMessagesFromGirlsChat() {    
-    const msgs = await fetch('http://localhost:3333/portfolio-chat/messages/' + chatId, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
+  async function loadMessagesFromGirlsChat() {
+    const msgs = await fetch(
+      "https://girls-chat-api.onrender.com/portfolio-chat/messages/" + chatId,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
     const data = await msgs.json();
     const newBotMessages = data.messages;
     if (newBotMessages.messages && newBotMessages.messages.length > 0) {
-      setMessages((prev) => [...prev, ...newBotMessages.messages.map((m: any) => ({
-        id: m.id,
-        from: m.sent_by == userId ? "user" : "bot",
-        text: m.text,
-        timestamp: new Date(m.createdAt),
-      }))]);
+      setMessages((prev) => [
+        ...prev,
+        ...newBotMessages.messages.map((m: any) => ({
+          id: m.id,
+          from: m.sent_by == userId ? "user" : "bot",
+          text: m.text,
+          timestamp: new Date(m.created_at),
+        })),
+      ]);
     }
   }
 
   async function sendMessageToGirlsChat(text: string) {
     if (!token) return;
     setLoading(true);
-    await fetch('http://localhost:3333/portfolio-chat/messages/send', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+    await fetch(
+      "https://girls-chat-api.onrender.com/portfolio-chat/messages/send",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text, chatId }),
       },
-      body: JSON.stringify({ text, chatId })
-    });
+    );
     setLoading(false);
   }
 
   useEffect(() => {
+    let newSocket: Socket;
+    newSocket = io(process.env.NEXT_PUBLIC_API_URL!);
+
+    newSocket.on(
+      `new-message-${chatId}`, // 👈 escuta pelo chatId, não pelo userId
+      (msg: {
+        id: string;
+        text: string;
+        sentBy: number;
+        sentTo: number;
+        createdAt: string;
+      }) => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: msg.id,
+            from: msg.sentBy === userId ? "user" : "bot",
+            text: msg.text,
+            timestamp: new Date(msg.createdAt),
+          },
+        ]);
+      },
+    );
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket?.close();
+    };
+  }, [chatId]);
+
+  useEffect(() => {
     initChatWithGirlsChat();
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (!token) return;
@@ -853,7 +1094,9 @@ function EmaBot() {
       <div className={styles.chatMessages}>
         {messages.map((msg) => (
           <div key={msg.id}>
-            <div className={`${styles.chatBubble} ${msg.from === "bot" ? styles.chatBubbleBot : styles.chatBubbleUser}`}>
+            <div
+              className={`${styles.chatBubble} ${msg.from === "bot" ? styles.chatBubbleBot : styles.chatBubbleUser}`}
+            >
               {msg.text}
               <span className={styles.chatTime}>{fmt(msg.timestamp)}</span>
             </div>
@@ -930,18 +1173,48 @@ function ContactSection() {
   };
 
   const socials = [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/emanuelemds/", icon: "bxl-linkedin" },
-    { label: "GitHub", href: "https://github.com/emanuuele", icon: "bxl-github" },
-    { label: "Instagram", href: "https://www.instagram.com/emanuelecode/", icon: "bxl-instagram" },
-    { label: "E-mail", href: "mailto:emanuele.mdsilva@gmail.com", icon: "bx-envelope" },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/emanuelemds/",
+      icon: "bxl-linkedin",
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/emanuuele",
+      icon: "bxl-github",
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/emanuelecode/",
+      icon: "bxl-instagram",
+    },
+    {
+      label: "E-mail",
+      href: "mailto:emanuele.mdsilva@gmail.com",
+      icon: "bx-envelope",
+    },
   ];
 
   return (
-    <section id="contato" style={{ padding: "clamp(80px,10vw,130px) 0", background: "var(--bg-primary)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(20px,5vw,60px)" }}>
+    <section
+      id="contato"
+      style={{
+        padding: "clamp(80px,10vw,130px) 0",
+        background: "var(--bg-primary)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 clamp(20px,5vw,60px)",
+        }}
+      >
         <div data-aos="fade-up" data-aos-duration="700">
           <SectionLabel>Vamos conversar</SectionLabel>
-          <SectionTitle>Entre em <em>contato</em></SectionTitle>
+          <SectionTitle>
+            Entre em <em>contato</em>
+          </SectionTitle>
         </div>
 
         <div className={styles.contactGrid}>
@@ -950,40 +1223,96 @@ function ContactSection() {
             data-aos-duration="800"
             data-aos-delay="100"
           >
-            <form onSubmit={handleSubmit} className={styles.contactForm} noValidate>
+            <form
+              onSubmit={handleSubmit}
+              className={styles.contactForm}
+              noValidate
+            >
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Nome</label>
-                <input className={styles.input} placeholder="Seu nome completo" value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                <input
+                  className={styles.input}
+                  placeholder="Seu nome completo"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
               </div>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>E-mail</label>
-                <input className={styles.input} type="email" placeholder="seu@email.com" value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <input
+                  className={styles.input}
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
               </div>
               <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Mensagem</label>
-                <textarea className={styles.textarea} placeholder="Conte-me sobre seu projeto ou oportunidade..."
-                  value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                <textarea
+                  className={styles.textarea}
+                  placeholder="Conte-me sobre seu projeto ou oportunidade..."
+                  value={form.message}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
+                />
               </div>
 
               {status === "sent" && (
-                <div style={{ padding: "12px 16px", background: "var(--pink-pale)", borderRadius: "var(--radius-md)", color: "var(--pink-vivid)", fontSize: "0.9rem", fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
-                  <Bx name="bx-check-circle" /> Mensagem enviada! Responderei em breve.
+                <div
+                  style={{
+                    padding: "12px 16px",
+                    background: "var(--pink-pale)",
+                    borderRadius: "var(--radius-md)",
+                    color: "var(--pink-vivid)",
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <Bx name="bx-check-circle" /> Mensagem enviada! Responderei em
+                  breve.
                 </div>
               )}
               {status === "error" && (
-                <div style={{ padding: "12px 16px", background: "#fee2e2", borderRadius: "var(--radius-md)", color: "#dc2626", fontSize: "0.9rem", fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
-                  <Bx name="bx-error" /> Preencha todos os campos antes de enviar.
+                <div
+                  style={{
+                    padding: "12px 16px",
+                    background: "#fee2e2",
+                    borderRadius: "var(--radius-md)",
+                    color: "#dc2626",
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <Bx name="bx-error" /> Preencha todos os campos antes de
+                  enviar.
                 </div>
               )}
 
-              <button type="submit" className={styles.btnPrimary} style={{ alignSelf: "flex-start" }}>
+              <button
+                type="submit"
+                className={styles.btnPrimary}
+                style={{ alignSelf: "flex-start" }}
+              >
                 Enviar mensagem <Bx name="bx-send" />
               </button>
             </form>
 
-            <div style={{ marginTop: 32, display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <div
+              style={{
+                marginTop: 32,
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 12,
+              }}
+            >
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -1016,16 +1345,38 @@ function ContactSection() {
 // ─────────────────────────────────────────────
 function Footer() {
   const links = [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/emanuelemds/", icon: "bxl-linkedin" },
-    { label: "GitHub", href: "https://github.com/emanuuele", icon: "bxl-github" },
-    { label: "Instagram", href: "https://www.instagram.com/emanuelecode/", icon: "bxl-instagram" },
-    { label: "E-mail", href: "mailto:emanuele.mdsilva@gmail.com", icon: "bx-envelope" },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/emanuelemds/",
+      icon: "bxl-linkedin",
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/emanuuele",
+      icon: "bxl-github",
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/emanuelecode/",
+      icon: "bxl-instagram",
+    },
+    {
+      label: "E-mail",
+      href: "mailto:emanuele.mdsilva@gmail.com",
+      icon: "bx-envelope",
+    },
   ];
 
   return (
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
-        <p style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", color: "var(--pink-vivid)" }}>
+        <p
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "1.5rem",
+            color: "var(--pink-vivid)",
+          }}
+        >
           <span>&lt; emanuele maria / &gt;</span>
         </p>
         <div className={styles.footerLinks}>
@@ -1037,13 +1388,17 @@ function Footer() {
               rel="noopener noreferrer"
               className={styles.footerLink}
             >
-              <Bx name={link.icon} style={{ fontSize: "1.1rem" }} /> {link.label}
+              <Bx name={link.icon} style={{ fontSize: "1.1rem" }} />{" "}
+              {link.label}
             </a>
           ))}
         </div>
         <p className={styles.footerCopy}>
-          © 2025 Emanuele Maria. Todos os direitos reservados.<br />
-          Desenvolvido com <Bx name="bxs-heart" style={{ color: "var(--pink-vivid)" }} /> por Emanuele Maria
+          © 2025 Emanuele Maria. Todos os direitos reservados.
+          <br />
+          Desenvolvido com{" "}
+          <Bx name="bxs-heart" style={{ color: "var(--pink-vivid)" }} /> por
+          Emanuele Maria
         </p>
       </div>
     </footer>
@@ -1074,7 +1429,7 @@ export default function Home() {
   const { dark, toggle } = useDarkMode();
 
   useEffect(() => {
-    import('aos').then((AOS) => {
+    import("aos").then((AOS) => {
       AOS.default.init({
         duration: 700,
         once: true,
