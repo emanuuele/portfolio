@@ -1,7 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import puppeteer from "puppeteer";
 import { NextResponse } from "next/server";
+import puppeteer from "puppeteer-core";
+import Chromium from "@sparticuz/chromium";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,11 +20,12 @@ export async function GET() {
 
     browser = await puppeteer.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: Chromium.args,
+      executablePath: await Chromium.executablePath(),
     });
 
     const page = await browser.newPage();
-    await page.setContent(htmlWithAssets, { waitUntil: "networkidle0" });
+    await page.setContent(htmlWithAssets);
 
     const pdfBuffer = await page.pdf({
       format: "A4",
