@@ -417,7 +417,7 @@ function Header({
     <>
       <header className={styles.header}>
         <a href="#" className={styles.logo}>
-          <span>&lt; emanuele maria / &gt;</span>
+          <span>&lt; emanuele mª / &gt;</span>
         </a>
         <nav className={styles.nav}>
           <ul className={styles.navLinks}>
@@ -1377,7 +1377,7 @@ function Footer() {
             color: "var(--pink-vivid)",
           }}
         >
-          <span>&lt; emanuele maria / &gt;</span>
+          <span>&lt; emanuele mª / &gt;</span>
         </p>
         <div className={styles.footerLinks}>
           {links.map((link) => (
