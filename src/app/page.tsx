@@ -1040,7 +1040,7 @@ function EmaBot() {
 
   useEffect(() => {
     let newSocket: Socket;
-    newSocket = io(process.env.NEXT_PUBLIC_API_URL!);
+    newSocket = io("https://girls-chat-api.onrender.com");
 
     newSocket.on(
       `new-message-${chatId}`, // 👈 escuta pelo chatId, não pelo userId
